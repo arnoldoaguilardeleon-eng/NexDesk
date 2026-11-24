@@ -6,7 +6,7 @@
 **Grupo:** 8AA
 **Integrantes:** Arnoldo Aguilar de León
 **Fecha:** 24 de noviembre de 2026
-
+**Repositorio:** [ENLACE AL REPOSITORIO]
 
 ---
 
@@ -196,7 +196,6 @@ Notas de diseño:
 - `subscriptions` pertenece a la **organización**, porque quien paga es su administrador.
 - `payments.stripe_event_id` es único para evitar procesar dos veces el mismo webhook.
 - `chat_usage_daily` usa clave primaria compuesta y `INSERT ... ON CONFLICT DO UPDATE` atómico.
-- Los tickets mensuales del plan Free se cuentan por mes calendario; los del plan Pro, por periodo de facturación de Stripe.
 
 ### 6.2 MongoDB Atlas
 
@@ -232,18 +231,18 @@ PostgreSQL es la fuente de verdad. MongoDB referencia sus identificadores. No ha
 
 ## 7. Herramientas MCP propuestas
 
-| Herramienta | Propósito | Base | Prioridad |
-|---|---|---|---|
-| `get_my_account` | Perfil, rol, plan y consumo del usuario autenticado | PostgreSQL | Avance 2 |
-| `create_ticket` | Crear un ticket (usuario y organización salen del token) | PostgreSQL | Avance 2 |
-| `list_tickets` | Listar tickets visibles según el rol | PostgreSQL | Avance 2 |
-| `get_conversation_history` | Conversaciones y mensajes recientes del usuario | MongoDB | Avance 2 |
-| `get_ticket_details` | Detalle de un ticket con verificación de permiso | PostgreSQL | Avance 3 |
-| `add_ticket_comment` | Agregar un comentario | PostgreSQL | Avance 3 |
-| `update_ticket_status` | Cambiar el estado (restringido por rol) | PostgreSQL | Avance 3 |
-| `get_ticket_statistics` | Estadísticas limitadas a la organización y al plan | PostgreSQL | Avance 3 |
+| Herramienta | Propósito | Base |
+|---|---|---|
+| `get_my_account` | Perfil, rol, plan y consumo del usuario autenticado | PostgreSQL |
+| `create_ticket` | Crear un ticket (usuario y organización salen del token) | PostgreSQL |
+| `list_tickets` | Listar tickets visibles según el rol | PostgreSQL |
+| `get_conversation_history` | Conversaciones y mensajes recientes del usuario | MongoDB |
+| `get_ticket_details` | Detalle de un ticket con verificación de permiso | PostgreSQL |
+| `add_ticket_comment` | Agregar un comentario | PostgreSQL |
+| `update_ticket_status` | Cambiar el estado (restringido por rol) | PostgreSQL |
+| `get_ticket_statistics` | Estadísticas limitadas a la organización y al plan | PostgreSQL |
 
-Cada herramienta se documentará con parámetros, validaciones, permisos, errores, ejemplo de invocación y evidencia de ejecución real. Las herramientas de escritura requerirán confirmación explícita del usuario cuando las invoque el modelo.
+Cada herramienta se documentará con parámetros, validaciones, permisos, errores, ejemplo de invocación y evidencia de ejecución real.
 
 ## 8. Planes y flujo de pago
 
@@ -253,8 +252,6 @@ Cada herramienta se documentará con parámetros, validaciones, permisos, errore
 | Usuarios | 3 | 10 |
 | Tickets mensuales | 30 | 200 |
 | Mensajes de chatbot por día y usuario | 20 | 100 |
-| Historial de conversaciones | 7 días | 90 días |
-| Estadísticas | Totales por estado | Además por prioridad y categoría |
 
 Los precios y límites son ilustrativos y se validan siempre en el backend.
 
@@ -269,27 +266,3 @@ Los precios y límites son ilustrativos y se validan siempre en el backend.
 7. La aplicación refleja el nuevo plan.
 
 Se documentarán las variables de entorno y los pasos para operar con un proveedor real.
-
-## 9. Plan de contingencia de la IA
-
-Si el proveedor de IA falla o agota su cuota, el chatbot muestra "Modo sin IA" y acepta comandos (`/mis-tickets`, `/ticket TCK-001`, `/crear`) que invocan **las mismas herramientas MCP** mediante el cliente MCP, sin pasar por el modelo. Las llamadas, permisos y datos siguen siendo reales; solo se pierde la interpretación del lenguaje natural.
-
-## 10. Seguridad
-
-Autenticación con Supabase Auth; roles y aislamiento por organización validados en backend; validación de entradas; consultas parametrizadas; secretos en variables de entorno; verificación de firma de webhooks; permisos mínimos por herramienta MCP; límites de uso del chatbot; HTTPS en producción; bases de datos sin acceso público innecesario; manejo controlado de errores.
-
-## 11. Plan de entregas
-
-| Fecha | Entrega | Peso | Meta |
-|---|---|---:|---|
-| 24 nov | Avance 1 | 10 % | Propuesta, diagramas, modelo de datos, flujo de pago y repositorio |
-| 1 dic | Avance 2 | 10 % | Login, ambas BD, 3 herramientas MCP o más, primer flujo del chatbot, pago sandbox, README |
-| 7 dic | Avance 3 | 10 % | Staging, 6 herramientas o más, chatbot con datos reales, pagos completos, seguridad, pruebas |
-| 10 dic | Entrega final | 70 % | Producción, documentación, evidencia y demostración presencial |
-
-## 12. Riesgos principales
-
-- **Tiempo:** plazo corto; se prioriza lo obligatorio.
-- **Identidad backend-MCP:** mitigada con token firmado; se probarán casos de acceso no autorizado.
-- **Cuota del proveedor de IA:** se verificarán límites vigentes; el modo de comandos cubre la demostración.
-- **Despliegue:** los webhooks requieren URL pública y los servicios gratuitos pueden suspenderse por inactividad.
