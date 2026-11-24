@@ -3,9 +3,10 @@
 **Materia:** Programación Lógica y Funcional, Unidad 4
 **Institución:** Tecnológico Nacional de México, Campus Nuevo León
 **Equipo:** 04
-**Grupo:** 8AA
+**Grupo:** [GRUPO]
 **Integrantes:** Arnoldo Aguilar de León
 **Fecha:** 24 de noviembre de 2026
+**Repositorio:** [ENLACE AL REPOSITORIO]
 
 ---
 
@@ -72,12 +73,13 @@ flowchart TD
     MG[(MongoDB Atlas)]
 
     U --> FE
-    FE <--> AUTH
-    FE -->|Sesión y mensajes| API
+    FE <-->|Inicio de sesión| AUTH
+    FE -->|Mensajes + JWT de Supabase| API
+    API -->|Verifica el JWT| AUTH
     API --> MC
     MC <--> AI
-    MC <-->|Descubre e invoca herramientas<br/>con token interno firmado| MS
-    MS -->|Operaciones internas| API
+    MC <-->|Descubre e invoca herramientas<br/>Token firmado de corta duración<br/>sub, org_id, aud, exp| MS
+    MS -->|API interna del backend<br/>validación de permisos| API
     API --> PG
     API --> MG
     API <--> PAY
@@ -103,6 +105,7 @@ El cliente MCP vive dentro del backend. El servidor MCP **no accede directamente
 - Los esquemas de las herramientas no incluyen parámetros de identidad; el modelo no ve ni modifica el token.
 - El backend vuelve a consultar el rol en `organization_members` en cada operación.
 - El contenido de tickets y comentarios se trata como no confiable (mitigación de prompt injection).
+- Los endpoints internos que usa el servidor MCP están separados de las rutas públicas del frontend y exigen el token interno firmado; el backend no los acepta sin él.
 
 ## 6. Modelo de datos preliminar
 
