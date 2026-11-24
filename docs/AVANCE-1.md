@@ -3,7 +3,7 @@
 **Materia:** Programación Lógica y Funcional, Unidad 4
 **Institución:** Tecnológico Nacional de México, Campus Nuevo León
 **Equipo:** 04
-**Grupo:** [GRUPO]
+**Grupo:** 8AA
 **Integrantes:** Arnoldo Aguilar de León
 **Fecha:** 24 de noviembre de 2026
 **Repositorio:** [ENLACE AL REPOSITORIO]
