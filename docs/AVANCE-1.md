@@ -254,3 +254,14 @@ Cada herramienta se documentará con parámetros, validaciones, permisos, errore
 | Mensajes de chatbot por día y usuario | 20 | 100 |
 
 Los precios y límites son ilustrativos y se validan siempre en el backend.
+ 
+**Flujo con Stripe Checkout (modo de pruebas):**
+ 
+1. El administrador consulta los planes y selecciona Pro.
+2. El backend crea una sesión de Stripe Checkout.
+3. El usuario paga con una tarjeta de prueba de Stripe; no se usan tarjetas reales.
+4. Stripe envía un webhook al backend.
+5. El backend verifica la firma con el cuerpo original de la petición.
+6. Se actualiza `subscriptions` y se registra el evento en `payments`.
+7. La aplicación refleja el nuevo plan.
+Se documentarán las variables de entorno y los pasos para operar con un proveedor real.
