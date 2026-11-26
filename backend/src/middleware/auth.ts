@@ -23,8 +23,8 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
       `select u.id as user_id, u.full_name, u.email, om.organization_id, om.role
          from users u
          join organization_members om on om.user_id = u.id
-        where u.auth_user_id = $1
-        order by om.id
+               where u.auth_user_id = $1
+        order by om.organization_id
         limit 1`,
       [data.user.id],
     );

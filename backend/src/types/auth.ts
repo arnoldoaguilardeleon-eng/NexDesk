@@ -1,8 +1,8 @@
 export type Role = "admin" | "tecnico" | "empleado";
 
 export interface AuthContext {
-  userId: string;          // users.id (PostgreSQL)
-  authUserId: string;      // auth.users.id (Supabase)
+  userId: string;
+  authUserId: string;
   email: string;
   fullName: string;
   organizationId: string;
