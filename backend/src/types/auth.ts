@@ -1,4 +1,4 @@
-export type Role = "admin" | "tecnico" | "empleado";
+export type Role = "admin" | "technician" | "employee";
 
 export interface AuthContext {
   userId: string;
