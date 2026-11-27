@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { env } from "./config/env.js";
 import { pool } from "./database/pg.js";
 import meRoutes from "./routes/me.js";
+import ticketRoutes from "./routes/tickets.js";
 
 const app = express();
 app.use(helmet());
@@ -20,6 +21,7 @@ app.get("/health", async (_req, res) => {
 });
 
 app.use(meRoutes);
+app.use(ticketRoutes);
 
 app.listen(env.PORT, () => {
   console.log(`API en http://localhost:${env.PORT}`);
