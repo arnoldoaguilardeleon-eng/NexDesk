@@ -7,6 +7,8 @@ const schema = z.object({
   SUPABASE_ANON_KEY: z.string().min(1),
   DATABASE_URL: z.string().min(1),
   FRONTEND_ORIGIN: z.string().url(),
+  MONGODB_URI: z.string().min(1),
+  MONGODB_DB: z.string().default("nexdesk"),
 });
 
 const parsed = schema.safeParse(process.env);
